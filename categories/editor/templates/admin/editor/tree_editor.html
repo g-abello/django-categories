@@ -6,10 +6,16 @@
     (function($) {
         $(document).ready(function()  {
             var srchString = document.getElementById('searchbar').value;
-            if (srchString == '')
-                treeTable = $("#result_list").treeTable({initialState : "{{ EDITOR_TREE_INITIAL_STATE }}"});
-            else
-                treeTable = $("#result_list").treeTable({initialState : "expanded"});
+            if (srchString == '') {
+                treeTable = $("#result_list").treetable(
+                    {initialState : "{{ EDITOR_TREE_INITIAL_STATE }}"}
+                );
+            }
+            else {
+                treeTable = $("#result_list").treetable(
+                    {initialState : "expanded"}
+                );
+            }
         function toggleChildren(index, value) {
             var row = value.parentNode.parentNode;
             if (row.className.match(/child-of-node-\d+/)) {
@@ -29,7 +35,7 @@
                 });
             });
         });
-    })(django.jQuery);
+    })(jQuery);
     </script>
 {% endblock %}
 {% block result_list %}

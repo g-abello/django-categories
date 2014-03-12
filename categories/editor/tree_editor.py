@@ -90,10 +90,8 @@ class TreeEditor(admin.ModelAdmin):
     list_max_show_all = 200  # new in django 1.4
 
     class Media:
-        css = {'all': (settings.MEDIA_PATH + "jquery.treeTable.css", )}
-        js = []
-
-        js.extend((settings.MEDIA_PATH + "jquery.treeTable.js", ))
+        css = settings.CATEGORIES_EDITOR_CSS
+        js = settings.CATEGORIES_EDITOR_JS
 
     def __init__(self, *args, **kwargs):
         super(TreeEditor, self).__init__(*args, **kwargs)
