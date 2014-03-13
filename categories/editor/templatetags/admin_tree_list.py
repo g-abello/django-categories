@@ -80,7 +80,6 @@ def items_for_tree_result(cl, result, form):
                 table_tag = 'td'  # {True:'th', False:'td'}[first]
             else:
                 table_tag = {True:'th', False:'td'}[first]
-
             url = cl.url_for_result(result)
             # Convert the pk to something that can be used in Javascript.
             # Problem cases are long ints (23L) and non-ASCII strings.

@@ -25,9 +25,19 @@
 </tr>
 </thead>
 <tbody>
-{% for result in results %}
-<tr id="node-{{ result.pk }}" class="{% cycle 'row1' 'row2' %}{% if result.parent_pk %} child-of-node-{{result.parent_pk}}{% endif %}">{% for item in result %}{{ item }}{% endfor %}</tr>
-{% endfor %}
+    {% for result in results %}
+        <tr 
+            class="{% cycle 'row1' 'row2' %}"
+            data-tt-id="{{ result.pk }}"
+            {% if result.parent_pk %}
+                data-tt-parent-id="{{result.parent_pk}}"
+            {% endif %}
+        >
+            {% for item in result %}
+                {{ item }}
+            {% endfor %}
+        </tr>
+    {% endfor %}
 </tbody>
 </table>
 </div>

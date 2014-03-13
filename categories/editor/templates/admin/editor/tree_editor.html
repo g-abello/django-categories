@@ -2,40 +2,21 @@
 {% load admin_list i18n admin_tree_list %}
 {% block extrahead %}
     {{block.super}}
-    <script type="text/javascript">
-    (function($) {
-        $(document).ready(function()  {
-            var srchString = document.getElementById('searchbar').value;
-            if (srchString == '') {
-                treeTable = $("#result_list").treetable(
-                    {initialState : "{{ EDITOR_TREE_INITIAL_STATE }}"}
-                );
-            }
-            else {
-                treeTable = $("#result_list").treetable(
-                    {initialState : "expanded"}
-                );
-            }
-        function toggleChildren(index, value) {
-            var row = value.parentNode.parentNode;
-            if (row.className.match(/child-of-node-\d+/)) {
-                value.checked = /child-of-node-(\d+)/.exec(row.className);
-            }
-            if($(row).hasClass("parent")) {
-                $("table.treeTable tbody tr.child-of-" + row.id + " input").each(toggleChildren);
-            }
-            $("tr input.action-select").actions();
-        };
-        $('.action-select').each(
-            function(){
-                $(this).bind('click', function(event){
-                    // Get the tr from checkbox -> td -> tr
-                    var row = event.currentTarget.parentNode.parentNode;
-                    $("table.treeTable tbody tr.child-of-" + row.id + " input").each(toggleChildren);
-                });
+    <script>
+        (function($) {
+            $(document).ready(function()  {
+                var treeTableOptions = {
+                    column: 1, // Insert tree elements in the Name coulmn
+                    columnElType: "th,td",
+                    expandable: true,
+                    initialState: "{{ EDITOR_TREE_INITIAL_STATE }}"
+                }
+                if ($("#searchbar").val() !== "") {
+                    treeTableOptions.initialState = "expanded"
+                }
+                $("#result_list").treetable(treeTableOptions);
             });
-        });
-    })(jQuery);
+        })(jQuery);
     </script>
 {% endblock %}
 {% block result_list %}
