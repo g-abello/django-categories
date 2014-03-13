@@ -11,4 +11,4 @@ install:
   - pip install .
   - pip install South
 script:
-  - ./example/manage.py test categories.tests
+  - ./example/manage.py test categories
