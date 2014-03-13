@@ -1,4 +1,4 @@
-{% load category_tags %}{% spaceless %}
+{% load url from future %}{% load category_tags %}{% spaceless %}
 <ul><li><a href="{% url "categories_tree_list" %}">Top</a>
 {% for node,structure in path|tree_info %}
 	{% if structure.new_level %}<ul><li>
