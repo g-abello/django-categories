@@ -8,7 +8,7 @@ env:
   - DJANGO_VERSION=1.6.2
 install:
   - pip install Django==$DJANGO_VERSION
-  - pip install .
+  - pip install -e .
   - pip install South
 script:
   - ./example/manage.py test categories
