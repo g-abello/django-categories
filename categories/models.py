@@ -71,6 +71,13 @@ class Category(CategoryBase):
             """
             return self.categoryrelation_set.filter(relation_type=relation_type)
 
+    @classmethod
+    def create(cls, *args, **kwargs):
+        """Saves and returns a new Category object."""
+        category = cls(*args, **kwargs)
+        category.save()
+        return category
+
     def save(self, *args, **kwargs):
         if self.thumbnail:
             from django.core.files.images import get_image_dimensions
