@@ -5,6 +5,6 @@
 # won't need these in the future.
 # 
 from categories.tests.test_category_import import *
-from categories.tests.test_templatetags import *
-from categories.tests.test_manager import *
+from categories.tests.test_models import *
 from categories.tests.test_registration import *
+from categories.tests.test_templatetags import *
