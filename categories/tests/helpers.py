@@ -70,25 +70,25 @@ def assert_equal_without_whitespace(string, other_string):
     s = drop_whitespace(string)
     other_s = drop_whitespace(other_string)
     if s != other_s:
-        raise AssertionError("Expected {} to equal {}".format(s, other_s))
+        raise AssertionError("Expected {0} to equal {1}".format(s, other_s))
 
 def assert_not_equal_without_whitespace(string, other_string):
     s = drop_whitespace(string)
     other_s = drop_whitespace(other_string)
     if s == other_s:
-        raise AssertionError("Expected {} to NOT equal {}".format(s, other_s))
+        raise AssertionError("Expected {0} to NOT equal {1}".format(s, other_s))
 
 def assert_equal_Qs(q, other_q):
     """Rasies AssertionError if q and other_q are not equal.
     """
     if not QComparer.equal_Qs(q, other_q):
-        raise AssertionError("Expected {} to equal {}".format(q, other_q))
+        raise AssertionError("Expected {0} to equal {1}".format(q, other_q))
 
 def assert_not_equal_Qs(q, other_q):
     """Rasies AssertionError if q and other_q are equal.
     """
     if QComparer.equal_Qs(q, other_q):
-        raise AssertionError("Expected {} to NOT equal {}".format(q, other_q))
+        raise AssertionError("Expected {0} to NOT equal {1}".format(q, other_q))
 
 def yield_nodes(tree):
     """Generator that traverses tree breadth-first and yields tree nodes."""

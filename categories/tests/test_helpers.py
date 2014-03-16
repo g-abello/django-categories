@@ -55,7 +55,7 @@ class HelpersTestCase(unittest.TestCase):
             for val in vals:
                 self.assertTrue(
                     val in n,
-                    "Expected to find {} in {}".format(val, n)
+                    "Expected to find {0} in {1}".format(val, n)
                 )
         
         assertInNextNode([("name", "Q two",)], nodes)
@@ -66,16 +66,18 @@ class HelpersTestCase(unittest.TestCase):
             ],
             nodes
         )
-        with self.assertRaises(StopIteration):
-            six.next(nodes)
+        self.assertRaises(StopIteration, six.next, nodes)
+        # with self.assertRaises(StopIteration):
+        #     six.next(nodes)
 
     # assert_equal_Qs and assert_not_equal_Qs raise AssertionErrors if the
     # passe Q trees don't meet expectations.
     #
     def test_assertQsEqual_raises_exception(self):
         q = Q(name="Q test")
-        with self.assertRaises(AssertionError):
-            assert_equal_Qs(q, q|q)
+        self.assertRaises(AssertionError, assert_equal_Qs, q, q|q)
+        # with self.assertRaises(AssertionError):
+        #     assert_equal_Qs(q, q|q)
 
     def test_assertQsNotEqual_raises_exception(self):
         Qs = [
@@ -84,22 +86,40 @@ class HelpersTestCase(unittest.TestCase):
             Q(name="Q two"),
         ]
         combined_Q = Qs[2] | (Qs[0] & Qs[1])
-        with self.assertRaises(AssertionError):
-            assert_not_equal_Qs(combined_Q, combined_Q)
+        self.assertRaises(
+            AssertionError,
+            assert_not_equal_Qs,
+            combined_Q,
+            combined_Q
+        )
+        # with self.assertRaises(AssertionError):
+        #     assert_not_equal_Qs(combined_Q, combined_Q)
 
     # assert_equal_without_whitespace and assert_not_equal_without_whitespace
     # determine if two strings are equal after removing all whitspace from them.
     #
     def test_assert_equal_without_whitespace_raises_excpetion(self):
         a = "A test string."
-        with self.assertRaises(AssertionError):
-            assert_equal_without_whitespace(a, a*2)
+        self.assertRaises(
+            AssertionError,
+            assert_equal_without_whitespace,
+            a,
+            a*2
+        )
+        # with self.assertRaises(AssertionError):
+        #     assert_equal_without_whitespace(a, a*2)
 
     def test_assert_not_equal_without_whitespace_raises_exception(self):
         a = " A test\t string\n with   whitespace ."
         b = "Ateststringwithwhitespace."
-        with self.assertRaises(AssertionError):
-            assert_not_equal_without_whitespace(a, b)
+        self.assertRaises(
+            AssertionError,
+            assert_not_equal_without_whitespace,
+            a,
+            b
+        )
+        # with self.assertRaises(AssertionError):
+        #     assert_not_equal_without_whitespace(a, b)
 
     # drop_whitespace returns a string with all whitespace replaced with empty
     # strings.

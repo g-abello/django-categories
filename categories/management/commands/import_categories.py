@@ -88,7 +88,7 @@ class Command(BaseCommand):
 
         for file_path in file_paths:
             if not os.path.isfile(file_path):
-                print("File {} not found.".format(file_path))
+                print("File {0} not found.".format(file_path))
                 continue
             f = open(file_path)
             data = f.readlines()
