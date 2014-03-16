@@ -135,8 +135,8 @@ def _category_relation_models(model_Qs):
         return {}
 
     Qs = copy.deepcopy(model_Qs)
-    combined_Q = Qs.pop()
-    for _Q in Qs:
+    combined_Q = Qs[0]
+    for _Q in Qs[1:]:
         combined_Q |= _Q
     return combined_Q
 
@@ -159,8 +159,11 @@ class CategoryRelation(models.Model):
 
     objects = CategoryRelationManager()
 
+    def __str__(self):
+        return self.__unicode__()
+
     def __unicode__(self):
-        return u"CategoryRelation"
+        return "CategoryRelation"
 
 
 try:

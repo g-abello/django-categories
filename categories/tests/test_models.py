@@ -1,10 +1,21 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import unittest
 
 from django.db.models import Q
 from django.test import TestCase
 
-from categories.models import _category_relation_models, Category
-from .helpers import assertQsEqual
+from categories.models import (
+    _category_relation_models,
+    Category,
+    CategoryRelation,
+)
+from .helpers import assert_equal_Qs
 
 
 class CategoriesModelsTestCase(unittest.TestCase):
@@ -17,7 +28,7 @@ class CategoriesModelsTestCase(unittest.TestCase):
             Q(app_label="test_app", model="one_model"),
             Q(app_label="test_app", model="two_model"),
         ]
-        assertQsEqual(Qs[0] | Qs[1], _category_relation_models(Qs))
+        assert_equal_Qs(Qs[0] | Qs[1], _category_relation_models(Qs))
     
     def test__category_relation_models_empty_list(self):
         self.assertEqual({}, _category_relation_models([]))
@@ -68,3 +79,12 @@ class CategoryDjangoTestCase(TestCase):
     def test___unicode__no_ancestors(self):
         self.assertEqual("Category", Category(name="Category").__unicode__())
 
+
+class CategoryRelationTestCase(unittest.TestCase):
+
+    # CategoryRelation.__unicode__ returns a simple text representation of
+    # CategoryRelation.
+    #
+    def test___unicode__(self):
+        category_relation = CategoryRelation()
+        self.assertEqual("CategoryRelation", str(category_relation))
