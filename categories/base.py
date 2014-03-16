@@ -2,11 +2,17 @@
 This is the base class on which to build a hierarchical category-like model
 with customizable metadata and its own name space.
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
 from django.contrib import admin
 from django.db import models
 from django import forms
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 
 from mptt.models import MPTTModel
@@ -65,7 +71,7 @@ class CategoryBase(MPTTModel):
 
     def __unicode__(self):
         ancestors = self.get_ancestors()
-        return ' > '.join([force_unicode(i.name) for i in ancestors] + [self.name, ])
+        return ' > '.join([force_text(i.name) for i in ancestors] + [self.name, ])
 
     class Meta:
         abstract = True

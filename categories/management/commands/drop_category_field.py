@@ -1,3 +1,12 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+from textwrap import dedent
+
 from django.core.management.base import BaseCommand
 
 
@@ -17,10 +26,18 @@ class Command(BaseCommand):
         try:
             from south.db import db
         except ImportError:
-            raise ImproperlyConfigured("South must be installed for this command to work")
+            raise ImproperlyConfigured(
+                    "South must be installed for this command to work"
+                )
 
         from categories.migration import drop_field
         if len(args) != 3:
-            print "You must specify an Application name, a Model name and a Field name"
+            print(dedent(
+                    """\
+                    You must specify an Application name, a Model name and a 
+                    Field name
+                    """
+                )
+            )
 
         drop_field(*args)

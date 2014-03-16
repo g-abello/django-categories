@@ -1,9 +1,19 @@
 """
 These functions handle the adding of fields to other models
 """
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import six
+
 from django.db.models import FieldDoesNotExist
-import fields
-from settings import FIELD_REGISTRY, MODEL_REGISTRY
+
+from . import fields
+from .settings import FIELD_REGISTRY, MODEL_REGISTRY
 
 
 def register_m2m(model, field_name='categories', extra_params={}):
@@ -45,7 +55,7 @@ def _process_registry(registry, call_func):
             raise ImproperlyConfigured(_('%(key) is not a model') % {'key' : key})
         if isinstance(value, (tuple, list)):
             for item in value:
-                if isinstance(item, basestring):
+                if isinstance(item, six.string_types):
                     call_func(model, item)
                 elif isinstance(item, dict):
                     field_name = item.pop('name')
@@ -53,7 +63,7 @@ def _process_registry(registry, call_func):
                 else:
                     raise ImproperlyConfigured(_("%(settings) doesn't recognize the value of %(key)") %
                                                {'settings' : 'CATEGORY_SETTINGS', 'key' : key})
-        elif isinstance(value, basestring):
+        elif isinstance(value, six.string_types):
             call_func(model, value)
         elif isinstance(value, dict):
             field_name = value.pop('name')

@@ -1,3 +1,10 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
@@ -81,9 +88,9 @@ class Command(BaseCommand):
 
         for file_path in file_paths:
             if not os.path.isfile(file_path):
-                print "File %s not found." % file_path
+                print("File {} not found.".format(file_path))
                 continue
-            f = file(file_path, 'r')
+            f = open(file_path)
             data = f.readlines()
             f.close()
 

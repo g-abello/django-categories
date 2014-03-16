@@ -1,19 +1,38 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import six
+from textwrap import dedent
+
 from django import template
 from django.db.models import get_model
-from django.template import (Node, TemplateSyntaxError, VariableDoesNotExist,
-                             FilterExpression)
+from django.template import (
+    Node,
+    TemplateSyntaxError,
+    VariableDoesNotExist,
+    FilterExpression,
+)
+
+from mptt.templatetags.mptt_tags import (
+    tree_path,
+    tree_info,
+    RecurseTreeNode,
+    full_tree_for_model,
+)
+from mptt.utils import drilldown_tree_for_node
+
 from categories.base import CategoryBase
 from categories.models import Category
-from mptt.utils import drilldown_tree_for_node
-from mptt.templatetags.mptt_tags import (tree_path, tree_info, RecurseTreeNode,
-                                         full_tree_for_model)
+
 
 register = template.Library()
-
 register.filter("category_path", tree_path)
 register.filter(tree_info)
 register.tag("full_tree_for_category", full_tree_for_model)
-
 
 def resolve(var, context):
     try:
@@ -24,13 +43,12 @@ def resolve(var, context):
         except AttributeError:
             return var
 
-
 def get_cat_model(model):
     """
     Return a class from a string or class
     """
     try:
-        if isinstance(model, basestring):
+        if isinstance(model, six.string_types):
             model_class = get_model(*model.split("."))
         elif issubclass(model, CategoryBase):
             model_class = model
@@ -39,7 +57,6 @@ def get_cat_model(model):
     except TypeError:
         raise TemplateSyntaxError("Unknown model submitted: %s" % model)
     return model_class
-
 
 def get_category(category_string, model=Category):
     """
@@ -68,7 +85,6 @@ def get_category(category_string, model=Category):
     except model_class.DoesNotExist:
         return None
 
-
 class CategoryDrillDownNode(template.Node):
     def __init__(self, category, varname, model):
         self.category = category
@@ -89,7 +105,6 @@ class CategoryDrillDownNode(template.Node):
         except:
             context[self.varname] = []
         return ''
-
 
 @register.tag
 def get_category_drilldown(parser, token):
@@ -114,18 +129,26 @@ def get_category_drilldown(parser, token):
         Grandparent, Parent, Child 1, Child 2, Child n
     """
     bits = token.split_contents()
-    error_str = '%(tagname)s tag should be in the format {%% %(tagname)s ' \
-                '"category name" [using "app.Model"] as varname %%} or ' \
-                '{%% %(tagname)s category_obj as varname %%}.'
+    error_format = dedent(
+        """\
+        '{name} tag should be in the format {%% {name} "category name" 
+        [using "app.Model"] as varname %%} or 
+        {%% %(tagname)s category_obj as varname %%}.'
+        """
+    )
     if len(bits) == 4:
         if bits[2] != 'as':
-            raise template.TemplateSyntaxError, error_str % {'tagname': bits[0]}
+            raise template.TemplateSyntaxError(
+                error_format.format(name=bits[0])
+            )
         if bits[2] == 'as':
             varname = bits[3].strip("'\"")
             model = "categories.category"
     if len(bits) == 6:
         if bits[2] not in ('using', 'as') or bits[4] not in ('using', 'as'):
-            raise template.TemplateSyntaxError, error_str % {'tagname': bits[0]}
+            raise template.TemplateSyntaxError(
+                error_format.format(name=bits[0])
+            )
         if bits[2] == 'as':
             varname = bits[3].strip("'\"")
             model = bits[5].strip("'\"")
@@ -134,7 +157,6 @@ def get_category_drilldown(parser, token):
             model = bits[3].strip("'\"")
     category = FilterExpression(bits[1], parser)
     return CategoryDrillDownNode(category, varname, model)
-
 
 @register.inclusion_tag('categories/breadcrumbs.html')
 def breadcrumbs(category_string, separator=' > ', using='categories.category'):
@@ -147,7 +169,6 @@ def breadcrumbs(category_string, separator=' > ', using='categories.category'):
     cat = get_category(category_string, using)
 
     return {'category': cat, 'separator': separator}
-
 
 @register.inclusion_tag('categories/ul_tree.html')
 def display_drilldown_as_ul(category, using='categories.Category'):
@@ -188,7 +209,6 @@ def display_drilldown_as_ul(category, using='categories.Category'):
         return {'category': cat, 'path': []}
     else:                          
         return {'category': cat, 'path': drilldown_tree_for_node(cat)}
-
 
 @register.inclusion_tag('categories/ul_tree.html')
 def display_path_as_ul(category, using='categories.Category'):
@@ -232,7 +252,6 @@ class TopLevelCategoriesNode(template.Node):
         context[self.varname] = model.objects.filter(parent=None).order_by('name')
         return ''
 
-
 @register.tag
 def get_top_level_categories(parser, token):
     """
@@ -262,7 +281,6 @@ def get_top_level_categories(parser, token):
             varname = bits[2].strip("'\"")
 
     return TopLevelCategoriesNode(varname, model)
-
 
 def get_latest_objects_by_category(category, app_label, model_name, set_name,
                                     date_field='pub_date', num=15):
@@ -340,9 +358,7 @@ def do_get_latest_objects_by_category(parser, token):
         num = FilterExpression(None, parser)
     return LatestObjectsNode(var_name, category, app_label, model_name, set_name,
                      date_field, num)
-
 register.tag("get_latest_objects_by_category", do_get_latest_objects_by_category)
-
 
 @register.filter
 def tree_queryset(value):
@@ -378,7 +394,6 @@ def tree_queryset(value):
 
         qs = qs.distinct()
     return qs
-
 
 @register.tag
 def recursetree(parser, token):

@@ -1,6 +1,15 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import copy
+
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.files.storage import get_storage_class
@@ -55,7 +64,7 @@ class Category(CategoryBase):
             return self.alternate_url
         prefix = reverse('categories_tree_list')
         ancestors = list(self.get_ancestors()) + [self, ]
-        return prefix + '/'.join([force_unicode(i.slug) for i in ancestors]) + '/'
+        return prefix + '/'.join([force_text(i.slug) for i in ancestors]) + '/'
 
     if RELATION_MODELS:
         def get_related_content_type(self, content_type):
@@ -102,12 +111,6 @@ class Category(CategoryBase):
         order_insertion_by = ('order', 'name')
 
 
-if RELATIONS:
-    CATEGORY_RELATION_LIMITS = reduce(lambda x, y: x | y, RELATIONS)
-else:
-    CATEGORY_RELATION_LIMITS = []
-
-
 class CategoryRelationManager(models.Manager):
     def get_content_type(self, content_type):
         """
@@ -124,11 +127,28 @@ class CategoryRelationManager(models.Manager):
         return qs.filter(relation_type=relation_type)
 
 
+def _category_relation_models(model_Qs):
+    """Returns a Q object built by ORing together the Qs in model_Qs. If
+    model_Qs is an empty list it returns an empty dictionary.
+    """
+    if not model_Qs:
+        return {}
+
+    Qs = copy.deepcopy(model_Qs)
+    combined_Q = Qs.pop()
+    for _Q in Qs:
+        combined_Q |= _Q
+    return combined_Q
+
+
 class CategoryRelation(models.Model):
     """Related category item"""
     category = models.ForeignKey(Category, verbose_name=_('category'))
     content_type = models.ForeignKey(
-        ContentType, limit_choices_to=CATEGORY_RELATION_LIMITS, verbose_name=_('content type'))
+        ContentType,
+        limit_choices_to=_category_relation_models(RELATIONS),
+        verbose_name=_('content type')
+    )
     object_id = models.PositiveIntegerField(verbose_name=_('object id'))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     relation_type = models.CharField(verbose_name=_('relation type'),
@@ -141,6 +161,7 @@ class CategoryRelation(models.Model):
 
     def __unicode__(self):
         return u"CategoryRelation"
+
 
 try:
     from south.db import db  # South is required for migrating. Need to check for it
