@@ -4,7 +4,6 @@ Django Categories
 
 [![Build Status](https://travis-ci.org/rbgb/django-categories.svg?branch=dev)](https://travis-ci.org/rbgb/django-categories)
 
-
 Django Categories grew out of our need to provide a basic hierarchical taxonomy management system that multiple applications could use independently or in concert.
 
 As a news site, our stories, photos, and other content get divided into "sections" and we wanted all the apps to use the same set of sections. As our needs grew, the Django Categories grew in the functionality it gave to category handling within web pages.
@@ -172,13 +171,18 @@ Features of the project
 Contributors
 ============
 
-* Corey Oordt      http://github.com/coordt
-* Erik Simmler     http://github.com/tgecho
-* Martin Ogden     http://github.com/martinogden
-* Ramiro Morales   http://github.com/ramiro
-* Evan Culver      http://github.com/eculver
-* Andrzej Herok    http://github.com/aherok
-* Jonathan Hensley
-* Justin Quick     http://github.com/justquick
-* Josh Ourisman    http://github.com/joshourisman
-* Jose Soares      http://github.com/josesoa
+* Corey Oordt       github.com/coordt
+* Erik Simmler      github.com/tgecho
+* Martin Ogden      githun.com/martinogden
+* Ramiro Morales    github.com/ramiro
+* Evan Culver       github.com/eculver
+* Andrzej Herok     github.com/aherok
+* Jonathan Hensley  github.com/jhensley
+* Justin Quick      github.com/justquick
+* Josh Ourisman     github.com/joshourisman
+* Jose Soares       github.com/jsoa
+* David Charbonnier github.com/oxys
+* Brad Jasper       github.com/bradjasper
+* Martin Matusiak   github.com/numerodix
+* Iacopo Spalletti  github.com/yakky
+* Chapman Shoop     github.com/belovachap
