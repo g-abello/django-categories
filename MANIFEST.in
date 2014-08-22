@@ -1,7 +1,6 @@
 include requirements.txt
 include NOTICES.txt
-include README.txt
-include CREDITS.txt
+include README.rst
 include LICENSE.txt
 
 recursive-include categories *.html *.txt *.json *.html
