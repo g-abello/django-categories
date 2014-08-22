@@ -36,6 +36,9 @@ else:
 # Add all the keys/values to the module's namespace
 globals().update(DEFAULT_SETTINGS)
 
+def parse_relation_models():
+    pass
+    
 RELATIONS = [Q(app_label=al, model=m) for al, m in [x.split('.') for x in RELATION_MODELS]]
 
 # The field registry keeps track of the individual fields created.

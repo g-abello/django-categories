@@ -19,3 +19,7 @@ example/media/
 #
 *.sublime-project
 *.sublime-workspace
+
+# Ignore tox files
+#
+.tox/

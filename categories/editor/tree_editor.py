@@ -1,3 +1,10 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.contrib.admin.views.main import ChangeList
@@ -9,7 +16,7 @@ from django.shortcuts import render_to_response
 
 import django
 
-import settings
+from . import settings
 
 
 class TreeEditorQuerySet(QuerySet):

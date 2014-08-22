@@ -1,5 +1,14 @@
-from django.db import models, DatabaseError
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
+import six
+
 from django.core.exceptions import ImproperlyConfigured
+from django.db import models, DatabaseError
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -11,17 +20,14 @@ def migrate_app(sender, app, created_models=None, verbosity=False, *args, **kwar
     from .models import Category
     from .settings import FIELD_REGISTRY
     import sys
-    import StringIO
 
-    org_stderror = sys.stderr
-    sys.stderr = StringIO.StringIO()  # south will print out errors to stderr
     try:
         from south.db import db
     except ImportError:
         raise ImproperlyConfigured(_('%(dependency) must be installed for this command to work') %
                                    {'dependency': 'South'})
     # pull the information from the registry
-    if isinstance(app, basestring):
+    if isinstance(app, six.string_types):
         app_name = app
     else:
         app_name = app.__name__.split('.')[-2]
@@ -45,14 +51,13 @@ def migrate_app(sender, app, created_models=None, verbosity=False, *args, **kwar
                 if verbosity:
                     print (_('Added ForeignKey %(field_name) to %(model_name)') %
                            {'field_name': field_name, 'model_name': model_name})
-            except DatabaseError, e:
+            except DatabaseError as e:
                 db.rollback_transaction()
                 if "already exists" in str(e):
                     if verbosity > 1:
                         print (_('ForeignKey %(field_name) to %(model_name) already exists') %
                                {'field_name': field_name, 'model_name': model_name})
                 else:
-                    sys.stderr = org_stderror
                     raise e
         elif isinstance(FIELD_REGISTRY[fld], CategoryM2MField):
             table_name = '%s_%s' % (mdl._meta.db_table, 'categories')
@@ -68,17 +73,14 @@ def migrate_app(sender, app, created_models=None, verbosity=False, *args, **kwar
                 if verbosity:
                     print (_('Added Many2Many table between %(model_name) and %(category_table)') %
                            {'model_name': model_name, 'category_table': 'category'})
-            except DatabaseError, e:
+            except DatabaseError as e:
                 db.rollback_transaction()
                 if "already exists" in str(e):
                     if verbosity > 1:
                         print (_('Many2Many table between %(model_name) and %(category_table) already exists') %
                                {'model_name': model_name, 'category_table': 'category'})
                 else:
-                    sys.stderr = org_stderror
                     raise e
-    sys.stderr = org_stderror
-
 
 def drop_field(app_name, model_name, field_name):
     """
@@ -105,7 +107,7 @@ def drop_field(app_name, model_name, field_name):
             table_name = mdl._meta.db_table
             db.delete_column(table_name, field_name)
             db.commit_transaction()
-        except DatabaseError, e:
+        except DatabaseError as e:
             db.rollback_transaction()
             raise e
     elif isinstance(FIELD_REGISTRY[fld], CategoryM2MField):
@@ -115,6 +117,6 @@ def drop_field(app_name, model_name, field_name):
             db.start_transaction()
             db.delete_table(table_name, cascade=False)
             db.commit_transaction()
-        except DatabaseError, e:
+        except DatabaseError as e:
             db.rollback_transaction()
             raise e

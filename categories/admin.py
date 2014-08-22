@@ -1,3 +1,10 @@
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 from django.contrib import admin
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -11,7 +18,7 @@ from .settings import MODEL_REGISTRY
 
 class NullTreeNodeChoiceField(forms.ModelChoiceField):
     """A ModelChoiceField for tree nodes."""
-    def __init__(self, level_indicator=u'---', *args, **kwargs):
+    def __init__(self, level_indicator='---', *args, **kwargs):
         self.level_indicator = level_indicator
         super(NullTreeNodeChoiceField, self).__init__(*args, **kwargs)
 
@@ -20,7 +27,7 @@ class NullTreeNodeChoiceField(forms.ModelChoiceField):
         Creates labels which represent the tree level of each node when
         generating option labels.
         """
-        return u'%s %s' % (self.level_indicator * getattr(
+        return '%s %s' % (self.level_indicator * getattr(
                                         obj, obj._mptt_meta.level_attr), obj)
 if RELATION_MODELS:
     from .models import CategoryRelation
