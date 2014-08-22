@@ -2,7 +2,8 @@
 Django Categories
 =================
 
-[![Build Status](https://travis-ci.org/rbgb/django-categories.svg?branch=dev)](https://travis-ci.org/rbgb/django-categories)
+.. image:: https://travis-ci.org/rbgb/django-categories.svg?branch=dev
+    :target: https://travis-ci.org/rbgb/django-categories
 
 Django Categories grew out of our need to provide a basic hierarchical taxonomy management system that multiple applications could use independently or in concert.
 
