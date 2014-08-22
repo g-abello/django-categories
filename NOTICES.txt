@@ -6,3 +6,5 @@ This product includes software developed at The Washington Times.
 Portions of this software were developed by matthiask for feincms
 (http://github.com/matthiask/feincms/tree/master). Specifically
 the Django admin modifications and templates.
+
+Copyright 2014 Chapman Shoop (Red Bird Grey Bird L.L.C.)
