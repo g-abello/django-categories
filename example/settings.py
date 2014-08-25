@@ -1,7 +1,17 @@
-# Django settings for sample project.
+# -*- coding: utf-8 -*-
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
+
 import os
 import sys
+
 import django
+import six
+
 
 APP = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 PROJ_ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -25,6 +35,28 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.flatpages',
+    'categories',
+    'categories.editor',
+    'mptt',
+    'simpletext',
+    'south',
+)
+
+# @belovachap August 24, 2014: South might not be Python 3 compatible yet.
+# https://stackoverflow.com/questions/24529618/why-does-django-south-1-0-use-iteritems
+#
+if six.PY3:
+    SOUTH_TESTS_MIGRATE = False
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -122,8 +154,3 @@ CATEGORIES_SETTINGS = {
         ),
     },
 }
-
-if django.VERSION[1] >= 4:
-    from settings14 import *
-if django.VERSION[1] == 3:
-    from settings13 import *

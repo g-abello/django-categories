@@ -12,7 +12,9 @@ As a news site, our stories, photos, and other content get divided into "section
 2.0.0 Release Notes
 ===================
 
-* @belovachap August 22, 2014: Document changes here, please.
+* Support for Python 3 (although South is still not fully Python 3 compatible)
+* Support for Django 1.6
+* Dropped support for Django 1.3
 
 New in 1.2
 ==========

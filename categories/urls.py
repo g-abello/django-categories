@@ -1,14 +1,15 @@
-from django.conf.urls import patterns, url
-from .models import Category
+# -*- coding: utf-8 -*-
+from __future__ import (
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+)
 
-try:
-    from django.views.generic import DetailView, ListView
-except ImportError:
-    try:
-        from cbv import DetailView, ListView
-    except ImportError:
-        from django.core.exceptions import ImproperlyConfigured
-        raise ImproperlyConfigured("For older versions of Django, you need django-cbv.")
+from django.conf.urls import patterns, url
+from django.views.generic import DetailView, ListView
+
+from .models import Category
 
 
 categorytree_dict = {
