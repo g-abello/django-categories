@@ -1,4 +1,1 @@
-South
-django-mptt>=0.5.2
-six
-unicode-slugify>=0.1.1
+-r requirements/base.txt

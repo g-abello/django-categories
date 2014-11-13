@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import django
 import categories
 import os
 
@@ -8,9 +9,15 @@ except IOError:
     long_description = ''
 
 try:
-    reqs = open(os.path.join(os.path.dirname(__file__), 'requirements.txt')).read()
+    if float(django.get_version()) < 1.7:
+        print "version antiguaa"
+        reqs = open(os.path.join(os.path.dirname(__file__), 'requirements/old_versions.txt')).read().splitlines()
+    else:
+        print "Django 1.7!"
+        reqs = open(os.path.join(os.path.dirname(__file__), 'requirements/base.txt')).read().splitlines()
 except (IOError, OSError):
     reqs = ''
+print "reqs = ", reqs
 
 setup(
     name='django-categories',
