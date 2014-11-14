@@ -32,6 +32,8 @@ class CategoryManager(models.Manager):
         """
         Only categories that are active
         """
+        if hasattr(self, "get_queryset"): #django 1.7 and above
+            return self.get_queryset().filter(active=True)
         return self.get_query_set().filter(active=True)
 
 

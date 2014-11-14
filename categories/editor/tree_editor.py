@@ -87,9 +87,17 @@ class TreeChangeList(ChangeList):
         else:
             return []
 
-    def get_query_set(self, *args, **kwargs):
-        qs = super(TreeChangeList, self).get_query_set(*args, **kwargs).order_by('tree_id', 'lft')
+    def get_queryset(self, *args, **kwargs):
+        try:
+            #django 1.7 and above
+            qs = super(TreeChangeList, self).get_queryset(*args, **kwargs).order_by('tree_id', 'lft')
+        except:
+            #django 1.6 and below
+            qs = super(TreeChangeList, self).get_query_set(*args, **kwargs).order_by('tree_id', 'lft')
         return qs
+
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
 
 
 class TreeEditor(admin.ModelAdmin):
@@ -176,7 +184,7 @@ class TreeEditor(admin.ModelAdmin):
         # Try to look up an action first, but if this isn't an action the POST
         # will fall through to the bulk edit check, below.
         if actions and request.method == 'POST':
-            response = self.response_action(request, queryset=cl.get_query_set())
+            response = self.response_action(request, queryset=cl.get_queryset())
             if response:
                 return response
 

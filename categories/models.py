@@ -116,14 +116,20 @@ class CategoryRelationManager(models.Manager):
         """
         Get all the items of the given content type related to this item.
         """
-        qs = self.get_query_set()
+        if django.VERSION < (1, 6):
+            qs = self.get_query_set()
+        else:
+            qs = self.get_query_set()
         return qs.filter(content_type__name=content_type)
 
     def get_relation_type(self, relation_type):
         """
         Get all the items of the given relationship type related to this item.
         """
-        qs = self.get_query_set()
+        if django.VERSION < (1, 6):
+            qs = self.get_query_set()
+        else:
+            qs = self.get_query_set()
         return qs.filter(relation_type=relation_type)
 
 
