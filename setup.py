@@ -9,7 +9,7 @@ except IOError:
     long_description = ''
 
 try:
-    if float(django.get_version()) < 1.7:
+    if django.VERSION < (1 ,7):
         reqs = open(os.path.join(os.path.dirname(__file__), 'requirements/old_versions.txt')).read().splitlines()
     else:
         reqs = open(os.path.join(os.path.dirname(__file__), 'requirements/base.txt')).read().splitlines()
