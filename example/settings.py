@@ -49,8 +49,10 @@ INSTALLED_APPS = (
     'categories.editor',
     'mptt',
     'simpletext',
-    'south',
 )
+
+if django.VERSION < (1, 7):
+    INSTALLED_APPS += ('south',)
 
 # @belovachap August 24, 2014: South might not be Python 3 compatible yet.
 # https://stackoverflow.com/questions/24529618/why-does-django-south-1-0-use-iteritems
