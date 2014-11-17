@@ -117,9 +117,10 @@ class CategoryTagsTest(TestCase):
             """\
             {% load category_tags %}
             {% get_top_level_categories using "categories.category" as varname %}
-            {% for item in varname %}{{ item }}|{% endfor %}
+            {% for item in varname %}{{ item.name }}|{% endfor %}
             """
         )
+        print(resp)
         assert_equal_without_whitespace(expected_resp, resp)
 
         # get_category_drilldown
