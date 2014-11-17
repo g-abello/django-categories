@@ -289,11 +289,14 @@ class TreeEditor(admin.ModelAdmin):
         else:
             return self.old_changelist_view(request, extra_context)
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         """
         Returns a QuerySet of all model instances that can be edited by the
         admin site. This is used by changelist_view.
         """
-        qs = self.model._default_manager.get_query_set()
+        qs = self.model._default_manager.get_queryset()
         qs.__class__ = TreeEditorQuerySet
         return qs
+
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
